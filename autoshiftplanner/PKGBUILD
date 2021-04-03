@@ -1,0 +1,39 @@
+# Maintainer: asakura
+
+pkgname=autoshiftplanner-git
+_pkgname=AutoShiftPlanner
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="Tool for calculating working shifts"
+url="https://github.com/betaiotazeta/AutoShiftPlanner"
+arch=('x86_64')
+license=('GPL3')
+depends=('java-environment')
+makedepends=('git' 'maven')
+md5sums=('SKIP')
+source=("${pkgname}"::'git://github.com/betaiotazeta/AutoShiftPlanner')
+
+
+build() {
+  cd ${srcdir}/${pkgname}
+  mvn clean compile assembly:single
+}
+
+package() {
+  cd ${srcdir}/${pkgname}
+  install -Dm755 ./target/$_pkgname-$pkgver-jar-with-dependencies.jar ${pkgdir}/usr/share/java/$_pkgname/$_pkgname.jar
+  mkdir -p -m755 ${pkgdir}/usr/bin
+  echo -e "#!/bin/sh
+java -jar /usr/share/java/$_pkgname/$_pkgname.jar" > $pkgdir/usr/bin/autoshiftplanner
+  chmod 755 ${pkgdir}/usr/bin/autoshiftplanner
+  echo -e "[Desktop Entry]
+Version=0.2.0
+Type=Application
+Name=AutoShiftPlanner
+Comment=AutoShiftPlanner
+Exec=/usr/bin/autoshiftplanner
+Icon=AutoShiftPlanner
+Terminal=false
+StartupNotify=false
+Categories=Application;" > $pkgdir/usr/share/applications/AutoShiftPlanner.desktop
+}

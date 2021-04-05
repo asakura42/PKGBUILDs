@@ -15,6 +15,7 @@ source=("${pkgname}"::'git://github.com/betaiotazeta/AutoShiftPlanner')
 
 
 build() {
+  sed -i '/staff.add.*[[:digit:]]/d' ${srcdir}/${pkgname}/src/main/java/org/betaiotazeta/autoshiftplanner/AspApp.java
   cd ${srcdir}/${pkgname}
   mvn clean compile assembly:single
 }

@@ -16,7 +16,7 @@ source=("${pkgname}"::'git://github.com/betaiotazeta/AutoShiftPlanner')
 
 build() {
   sed -i '/staff.add.*[[:digit:]]/d' ${srcdir}/${pkgname}/src/main/java/org/betaiotazeta/autoshiftplanner/AspApp.java
-  sed -i 's/secondsSpentLimit>180/secondsSpentLimit>360/' ${srcdir}/${pkgname}/src/main/resources/org/betaiotazeta/autoshiftplanner/solver/aspSolverConfig.xml
+  sed -i 's/secondsSpentLimit>180/secondsSpentLimit>1200/' ${srcdir}/${pkgname}/src/main/resources/org/betaiotazeta/autoshiftplanner/solver/aspSolverConfig.xml
   cd ${srcdir}/${pkgname}
   mvn clean compile assembly:single
 }
@@ -28,6 +28,7 @@ package() {
   echo -e "#!/bin/sh
 java -jar /usr/share/java/$_pkgname/$_pkgname.jar" > $pkgdir/usr/bin/autoshiftplanner
   chmod 755 ${pkgdir}/usr/bin/autoshiftplanner
+  mkdir -p ${pkgdir}/usr/share/applications/
   echo -e "[Desktop Entry]
 Version=0.2.0
 Type=Application
@@ -38,6 +39,7 @@ Icon=AutoShiftPlanner
 Terminal=false
 StartupNotify=false
 Categories=Application;" > $pkgdir/usr/share/applications/AutoShiftPlanner.desktop
+mkdir -p ${pkgdir}/usr/share/icons/hicolor/48x48/apps/
 echo -e "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAABGdBTUEAALGPC/xhBQAAAAFzUkdC
 AK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAACRQTFRF
 ////E4rN/wAAaaHW/4BAmNXy//eYAAAA////uBJxWyJ9WLJCrGegpwAAAAF0Uk5TAEDm2GYAAAAB
